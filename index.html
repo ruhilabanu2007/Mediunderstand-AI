@@ -1,0 +1,543 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Understand AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #18322f;
+            --muted: #627570;
+            --teal: #17675d;
+            --teal-dark: #10564d;
+            --mint: #eaf4f1;
+            --line: #d9e5e1;
+            --paper: #ffffff;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            color: var(--ink);
+            background: linear-gradient(180deg, #eaf4f1 0, #f6f9f7 320px, #f6f9f7 100%);
+            font-family: "DM Sans", "Aptos", sans-serif;
+        }
+
+        button,
+        textarea,
+        input {
+            font: inherit;
+        }
+
+        .site-header {
+            background: rgba(255, 255, 255, 0.94);
+            border-bottom: 1px solid rgba(217, 229, 225, 0.9);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            max-width: 1120px;
+            min-height: 92px;
+            margin: 0 auto;
+            padding: 16px 28px;
+        }
+
+        .brand-lockup {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 auto;
+            place-items: center;
+            border-radius: 8px;
+            background: var(--teal);
+            color: #fff;
+            font-family: "Manrope", sans-serif;
+            font-size: 29px;
+            font-weight: 500;
+            line-height: 1;
+        }
+
+        .brand-copy h1 {
+            margin: 0;
+            color: var(--ink);
+            font-family: "Manrope", "DM Sans", sans-serif;
+            font-size: 21px;
+            font-weight: 800;
+            line-height: 1.25;
+        }
+
+        .brand-copy p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.45;
+        }
+
+        .page-shell {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 38px 28px 64px;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+            align-items: stretch;
+            gap: 20px;
+        }
+
+        .panel {
+            min-width: 0;
+            padding: 28px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: var(--paper);
+            box-shadow: 0 16px 40px rgba(24, 66, 59, 0.06);
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 26px;
+        }
+
+        .panel-heading h2 {
+            margin: 0;
+            color: var(--ink);
+            font-family: "Manrope", "DM Sans", sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .panel-number {
+            display: grid;
+            width: 34px;
+            height: 34px;
+            flex: 0 0 auto;
+            place-items: center;
+            border: 1px solid #d8e8e3;
+            border-radius: 6px;
+            background: #f2f8f6;
+            color: var(--teal);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 9px;
+            color: #304843;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        textarea {
+            display: block;
+            width: 100%;
+            min-height: 246px;
+            padding: 15px 16px;
+            resize: vertical;
+            border: 1px solid #cbd9d4;
+            border-radius: 6px;
+            outline: none;
+            background: #fbfdfc;
+            color: var(--ink);
+            font-size: 15px;
+            line-height: 1.65;
+            transition: border-color 150ms ease, box-shadow 150ms ease;
+        }
+
+        textarea::placeholder,
+        .teach-back input::placeholder {
+            color: #82918d;
+        }
+
+        textarea:focus,
+        .teach-back input:focus {
+            border-color: #4a9388;
+            box-shadow: 0 0 0 3px rgba(39, 119, 106, 0.13);
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 18px;
+        }
+
+        button {
+            display: inline-flex;
+            min-height: 46px;
+            align-items: center;
+            justify-content: center;
+            gap: 13px;
+            padding: 11px 19px;
+            border: 0;
+            border-radius: 6px;
+            background: var(--teal);
+            color: #fff;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            transition: background-color 150ms ease, transform 150ms ease;
+        }
+
+        button:hover {
+            background: var(--teal-dark);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:focus-visible {
+            outline: 3px solid rgba(39, 119, 106, 0.3);
+            outline-offset: 3px;
+        }
+
+        .button-arrow {
+            position: relative;
+            display: inline-block;
+            width: 15px;
+            height: 1px;
+            background: currentColor;
+        }
+
+        .button-arrow::after {
+            position: absolute;
+            top: -3px;
+            right: 0;
+            width: 7px;
+            height: 7px;
+            border-top: 1px solid currentColor;
+            border-right: 1px solid currentColor;
+            content: "";
+            transform: rotate(45deg);
+        }
+
+        .response-panel {
+            background: #fcfefd;
+        }
+
+        .response-panel .panel-heading {
+            padding-bottom: 18px;
+            border-bottom: 1px solid #e4ece9;
+        }
+
+        #result {
+            min-height: 270px;
+            color: #354944;
+            font-size: 15px;
+            line-height: 1.75;
+            overflow-wrap: anywhere;
+        }
+
+        .empty-state {
+            display: flex;
+            min-height: 250px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 0;
+            color: #788984;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            display: flex;
+            width: 46px;
+            height: 46px;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            padding: 0 13px;
+            border: 1px solid #dbe9e4;
+            border-radius: 8px;
+            background: var(--mint);
+        }
+
+        .empty-icon span {
+            display: block;
+            height: 2px;
+            border-radius: 2px;
+            background: #559188;
+        }
+
+        .empty-icon span:last-child {
+            width: 65%;
+        }
+
+        .teach-back {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid #dfe9e5;
+        }
+
+        .teach-back input {
+            display: block;
+            width: 100%;
+            max-width: 500px;
+            min-height: 44px;
+            margin: 8px 0 10px;
+            padding: 10px 12px;
+            border: 1px solid #cbd9d4;
+            border-radius: 6px;
+            outline: none;
+            background: #fff;
+            color: var(--ink);
+            font-size: 14px;
+        }
+
+        #teachBackResult {
+            margin-top: 10px;
+        }
+
+        @media (max-width: 760px) {
+            .workspace {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .page-shell {
+                padding-top: 28px;
+            }
+
+            .panel {
+                padding: 24px;
+            }
+
+            #result {
+                min-height: 210px;
+            }
+
+            .empty-state {
+                min-height: 190px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-inner {
+                min-height: 80px;
+                padding: 13px 18px;
+            }
+
+            .brand-lockup {
+                gap: 10px;
+            }
+
+            .brand-mark {
+                width: 38px;
+                height: 38px;
+                font-size: 26px;
+            }
+
+            .brand-copy h1 {
+                font-size: 19px;
+            }
+
+            .brand-copy p {
+                max-width: 275px;
+                font-size: 12px;
+            }
+
+            .page-shell {
+                padding: 20px 14px 36px;
+            }
+
+            .workspace {
+                gap: 14px;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            .panel-heading {
+                margin-bottom: 20px;
+            }
+
+            textarea {
+                min-height: 210px;
+                font-size: 14px;
+            }
+
+            .action-row button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand-lockup">
+                <span class="brand-mark" aria-hidden="true">+</span>
+                <div class="brand-copy">
+                    <h1>Understand AI</h1>
+                    <p>Understand your healthcare instructions with confidence.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        <div class="workspace">
+            <section class="panel input-panel" aria-labelledby="inputTitle">
+                <div class="panel-heading">
+                    <h2 id="inputTitle">Healthcare instructions</h2>
+                    <span class="panel-number" aria-hidden="true">01</span>
+                </div>
+                <label class="field-label" for="healthInput">Instruction text</label>
+                <textarea id="healthInput" placeholder="Paste your healthcare instructions here"></textarea>
+                <div class="action-row">
+                    <button id="analyzeBtn" type="button">
+                        Understand
+                        <span class="button-arrow" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="panel response-panel" aria-labelledby="responseTitle">
+                <div class="panel-heading">
+                    <h2 id="responseTitle">Your explanation</h2>
+                    <span class="panel-number" aria-hidden="true">02</span>
+                </div>
+                <div id="result" aria-live="polite">
+                    <div class="empty-state">
+                        <span class="empty-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+                        <p>Your explanation will appear here.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        const analyzeBtn = document.getElementById("analyzeBtn");
+        const result = document.getElementById("result");
+
+        analyzeBtn.addEventListener("click", function () {
+            const userInput = document.getElementById("healthInput").value;
+
+            if (!userInput.trim()) {
+                result.textContent = "Please enter your healthcare instructions first.";
+                return;
+            }
+
+            const text = userInput.toLowerCase();
+            const sections = [];
+            const hasMedicationContext = /\bmedicine\b|\bmedication\b|\btablet\b|\bcapsule\b|\bpill\b|\bdose\b|\bprescription\b|\btake\b|\badminister\b/.test(text);
+
+            const medicationMeanings = [];
+            const frequencyRules = [
+                { pattern: /\bbid\b|\btwice (?:a|per) day\b|\btwo times (?:a|per) day\b/, meaning: "BID means twice a day." },
+                { pattern: /\btid\b|\bthree times (?:a|per) day\b/, meaning: "TID means three times a day." },
+                { pattern: /\bqid\b|\bfour times (?:a|per) day\b/, meaning: "QID means four times a day." },
+                { pattern: /\bonce (?:a|per) day\b|\bonce daily\b|\bdaily\b|\bevery day\b/, meaning: "This describes taking something once each day.", requiresMedicationContext: true },
+                { pattern: /\bqhs\b|\bat bedtime\b|\bevery night at bedtime\b/, meaning: "QHS means at bedtime." },
+                { pattern: /\bq4h\b|\bevery 4 hours\b/, meaning: "Q4H means every 4 hours." },
+                { pattern: /\bq6h\b|\bevery 6 hours\b/, meaning: "Q6H means every 6 hours." },
+                { pattern: /\bq8h\b|\bevery 8 hours\b/, meaning: "Q8H means every 8 hours." },
+                { pattern: /\bq12h\b|\bevery 12 hours\b/, meaning: "Q12H means every 12 hours." },
+                { pattern: /\bq24h\b|\bevery 24 hours\b/, meaning: "Q24H means every 24 hours." }
+            ];
+            frequencyRules.forEach((rule) => {
+                if (rule.pattern.test(text) && (!rule.requiresMedicationContext || hasMedicationContext)) {
+                    medicationMeanings.push(rule.meaning);
+                }
+            });
+
+            const mealRules = [
+                { pattern: /\bafter meals?\b|\bafter eating\b/, meaning: "After meals means after eating." },
+                { pattern: /\bbefore meals?\b|\bbefore eating\b/, meaning: "Before meals means before eating." },
+                { pattern: /\bwith food\b|\bwith meals?\b/, meaning: "With food or meals means taking it along with food as directed." },
+                { pattern: /\bon an empty stomach\b|\bbefore food\b/, meaning: "This describes taking it without food, as directed." }
+            ];
+            mealRules.forEach((rule) => {
+                if (rule.pattern.test(text)) medicationMeanings.push(rule.meaning);
+            });
+
+            if (
+                medicationMeanings.length > 0 ||
+                /\bmedicine\b|\bmedication\b|\btablet\b|\bcapsule\b|\bpill\b|\bdose\b|\bprescription\b/.test(text)
+            ) {
+                sections.push({
+                    meaning: medicationMeanings.join(" ") || "This instruction gives guidance about taking a medication.",
+                    what: "Follow the medication timing and food directions exactly as written. Do not change the dose or schedule based on this explanation.",
+                    why: "Following the written directions helps you use the medication as intended.",
+                    safety: "If the medicine, timing, or food directions are unclear, confirm them with your pharmacist or healthcare professional."
+                });
+            }
+
+            if (/\bfast(?:ing)?\b|\bnpo\b|nothing by mouth|no food|no (?:water|fluids?|drinks?)|do not (?:eat|drink)|before (?:the )?(?:test|procedure|scan|blood work)\b/.test(text)) {
+                sections.push({
+                    meaning: "This instruction describes food or drink limits before a test or procedure.",
+                    what: "Follow the stated preparation period and food or drink limits exactly. If the timing is not written, confirm it with the test team.",
+                    why: "Following the preparation instructions helps the care team carry out the test as intended.",
+                    safety: "Do not guess about water, other drinks, or regular medicines; confirm unclear details with the test team."
+                });
+            }
+
+            if (/\bwound\b|\bincision\b|\bdressing\b|\bbandage\b|keep.{0,20}\bclean\b|keep.{0,20}\bdry\b/.test(text)) {
+                sections.push({
+                    meaning: "This is a wound-care instruction about cleaning, drying, or changing a dressing.",
+                    what: "Use the cleaning method and dressing schedule stated in the original instructions. Keep the area clean or dry if directed.",
+                    why: "Following the care instructions helps protect the area while it heals.",
+                    safety: "If the steps or supplies are unclear, contact your healthcare professional for clarification."
+                });
+            }
+
+            if (/\bdiet\b|\blow[- ]sodium\b|\blow[- ]salt\b|\bsoft foods?\b|\bclear liquids?\b|\bfluid restriction\b|\bavoid (?:certain )?foods?\b|\bincrease fiber\b/.test(text)) {
+                sections.push({
+                    meaning: "This is food or diet guidance from your healthcare team.",
+                    what: "Follow only the foods, limits, and portions stated in your instructions. Do not add restrictions based on this explanation.",
+                    why: "Following the food guidance keeps your care consistent with the instructions you were given.",
+                    safety: "Ask your healthcare professional about substitutions or limits that are unclear."
+                });
+            }
+
+            if (/follow[- ]?up|\bappointment\b|\bdischarge\b|home care|at home|warning signs|when to call|contact (?:your )?(?:doctor|provider|clinic)|return to (?:the )?clinic/.test(text)) {
+                sections.push({
+                    meaning: "This instruction describes follow-up care, home care, or warning signs to watch for.",
+                    what: "Follow the home-care steps and arrange follow-up as written. Pay attention to the warning signs listed in your instructions.",
+                    why: "Following the instructions helps you stay connected with your care team after a visit or procedure.",
+                    safety: "If a step or listed warning sign is unclear, confirm its meaning with your healthcare professional."
+                });
+            }
+
+            if (sections.length === 0) {
+                result.textContent = "I couldn't identify this instruction yet. Please check the original instruction with your healthcare professional.";
+                return;
+            }
+
+            const combineSection = (name) => sections.map((section) => section[name]).join(" ");
+            result.innerHTML =
+                "<strong>Meaning</strong><br>" + combineSection("meaning") + "<br><br>" +
+                "<strong>What to Do</strong><br>" + combineSection("what") + "<br><br>" +
+                "<strong>Why It Matters</strong><br>" + combineSection("why") + "<br><br>" +
+                "<strong>Safety Note</strong><br>" + combineSection("safety");
+        });
+    </script>
+</body>
+</html>
